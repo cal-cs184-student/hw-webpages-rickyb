@@ -28,19 +28,19 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 4 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Ricardo Blanco</div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-rickyb/">Webpage</a>
 
 		<br>
 
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw4-innovative-cup-design">GitHub repo</a>
 
 		<figure>
-			<img src="clothsim.png" alt="Cloth draped over sphere" style="width:70%"/>
-			<figcaption>You can add images with captions!</figcaption>
+			<img src="images/pfp.png" alt="Cloth draped over sphere" style="width:70%"/>
+			<figcaption>Hello! pt4</figcaption>
 		</figure>
 
 		<!--
@@ -48,62 +48,267 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		In this project I utilized force vectors, grid logic, collision detection, and shaders in order to simulate spring-driven cloth simulation.
 
 		<h2>Part 1: Masses and springs</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+		<!-- <div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;"> -->
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/pinned2.png" width="400px"/>
+				  <figcaption>scene/pinned2.json</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/pinned2noshear.png" width="400px"/>
+				  <figcaption>Without shearing constrains</figcaption>
 				</td>
 			  </tr>
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/pinned2shear.png" width="400px"/>
+				  <figcaption>Only shearing constraints</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/pinned2all.png" width="400px"/>
+				  <figcaption>All constraints</figcaption>
 				</td>
 			  </tr>
-			</table>
-		</div>
+			<!-- </table>
+		</div> -->
 
 		<h2>Part 2: Simulation via numerical integration</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		images/pinned2.json reference:<br>
+		<figure>
+			<img src="images/pinned2ref.png"  style="width:70%"/>
+			<figcaption>Given parameters (resting)</figcaption>
+		</figure>
+		Experimenting with parameters:
+		<br>
+		<ul>
+			<li>ks</li>
+			Looking at the effects of low and high ks on scene/pinned2.jpeg we observe that low ks results in a more springy material and a high ks results in more rigidity.
+			<div style="display: flex; flex-direction: column; align-items: center;">
+				<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+				  <img src="images/pinned2lowks.png" width="400px"/>
+				  <figcaption>Low ks (1 N/m)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="images/pinned2highks.png" width="400px"/>
+				  <figcaption>High ks (100000 N/m)</figcaption>
+				</td>
+			  </tr>
+			  </table>
+			  </div>
+
+			<li>Density</li>
+			At low density the material appears to shrivel up and at higher densities the material loosens.
+			<div style="display: flex; flex-direction: column; align-items: center;">
+				<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+				  <img src="images/pinned2lowdensity.png" width="400px"/>
+				  <figcaption>Low density (1 g/cm^2)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="images/pinned2highdensity.png" width="400px"/>
+				  <figcaption>High density (150 g/cm^2)</figcaption>
+				</td>
+			  </tr>
+			  </table>
+			  </div>
+			<li>Damping</li>
+			At low damping you can see forces still acting on the cloth even when at steady state. But at higher damping this motion is removed. (Obviously this is difficult to capture in image form but they are provided below)
+			<div style="display: flex; flex-direction: column; align-items: center;">
+				<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+				  <img src="images/pinned2lowdamping.png" width="400px"/>
+				  <figcaption>Low damping (0%)</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="images/pinned2highdamping.png" width="400px"/>
+				  <figcaption>High damping (1%)</figcaption>
+				</td>
+			  </tr>
+			  </table>
+			  </div>
+		  </ul> 
+
+		  <br>
+		  scene/pinned4.json in final state:
+		  <figure>
+			<img src="images/pinned4.png"  style="width:70%"/>
+			<figcaption>Given parameters (resting)</figcaption>
+		</figure>
 
 		<h2>Part 3: Handling collisions with other objects</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		For both sphere and plane collision I check if the point mass is either inside the sphere or on the other side of the plane. If the point mass crosses either of these borders, we correct the position for it not to intersect.
+		<br><br>
+		Different ks effect on sphere intersection:
+		<figure>
+			<img src="images/sphere500ks.png"  style="width:70%"/>
+			<figcaption>500ks</figcaption>
+		</figure>
+		<figure>
+			<img src="images/sphere50000ks.png"  style="width:70%"/>
+			<figcaption>50000ks</figcaption>
+		</figure>
+		<figure>
+			<img src="images/sphere5000ks.png"  style="width:70%"/>
+			<figcaption>5000ks</figcaption>
+		</figure>
+		We can see that higher ks results in a more rigid cloth and a lower ks results in a more folding material. (same conclusive results as Part2).
+
+		<br><br>
+		<figure>
+			<img src="images/plane.png"  style="width:70%"/>
+			<figcaption>scene/plane.json (rest state)</figcaption>
+		</figure>
 
 		<h2>Part 4: Handling self-collisions</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Space is divided into a 3D grid where each cell's size is relative to the cloth's width, height and thickness. We then make a hash map of all these cells all with a unique key. We then build this map of cells, and using this map we can check a grid cell's neighbor and see if they are within 2 * thickness distance of each other in order to apply a correction vector as done in the previous part.
+		<figure>
+			<img src="images/clothearly.png"  style="width:70%"/>
+			<figcaption>Early Self-Collision</figcaption>
+		</figure>
+		<figure>
+			<img src="images/clothmid.png"  style="width:70%"/>
+			<figcaption>Mid Self-Collision</figcaption>
+		</figure>
+		<figure>
+			<img src="images/clothrest.png"  style="width:70%"/>
+			<figcaption>Late (rest) Self-Collision</figcaption>
+		</figure>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="images/clothlowdensity.png" width="400px"/>
+					  <figcaption>Low Density (1 g/cm^2)</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="images/clothhighdensity.png" width="400px"/>
+					  <figcaption>High Density (150 g/cm^2)</figcaption>
+					</td>
+				  </tr>
+				  <tr>
+					<td style="text-align: center;">
+					  <img src="images/clothlowks.png" width="400px"/>
+					  <figcaption>Low ks (1 N/m)</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="images/clothhighks.png" width="400px"/>
+					  <figcaption>High ks (100000 N/m)</figcaption>
+					</td>
+				  </tr>
+				</table>
+			</div>
+			With these parameter changes we observe the same effects seen before, Low ks and High density both did many inside folds as the cloth was falling. And high ks and low Density both spread out as the cloth fell.
 
 		<h2>Part 5: Shaders</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		A shader program utilizes both vertex and fragment shaders in order to render a 3D object. The vertex shader handles all geometry in the scene, transforming 3D position vertices onto the 2D screen. A fragment shader applies textures and color to each pixel in the scene.
+		<br><br>
+		Blinn-Phong shader boils down to combined lighting being the sum of ambient, diffuse, and specular lighting.
+		<figure>
+			<img src="images/phongambient.png"  style="width:70%"/>
+			<figcaption>Blinn-Phong (ambient component)</figcaption>
+		</figure>
+		<p style="text-align: center;">+</p>
+		<figure>
+			<img src="images/phongdiffuse.png"  style="width:70%"/>
+			<figcaption>Blinn-Phong (diffuse component)</figcaption>
+		</figure>
+		<p style="text-align: center;">+</p>
+		<figure>
+			<img src="images/phongspecular.png"  style="width:70%"/>
+			<figcaption>Blinn-Phong (specular component)</figcaption>
+		</figure>
+		<p style="text-align: center;">=</p>
+		<figure>
+			<img src="images/phongall.png"  style="width:70%"/>
+			<figcaption>Blinn-Phong Shader</figcaption>
+		</figure>
+		<br><br>
+		<figure>
+			<img src="images/texture.png"  style="width:70%"/>
+			<figcaption>Custom texture</figcaption>
+		</figure>
 
-		<h2>(Optional) Part 6: Extra Credit - Additional cloth simulation features!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<br><br>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+					<td style="text-align: center;">
+					  <img src="images/bumpcloth.png" width="400px"/>
+					  <figcaption>Bump Shader</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="images/bumpsphere.png" width="400px"/>
+					  <figcaption>Bump Shader</figcaption>
+					</td>
+				  </tr>
+				  <tr>
+					<td style="text-align: center;">
+					  <img src="images/displacementcloth.png" width="400px"/>
+					  <figcaption>Displacement Shader</figcaption>
+					</td>
+					<td style="text-align: center;">
+					  <img src="images/displacementsphere.png" width="400px"/>
+					  <figcaption>Displacement Shader</figcaption>
+					</td>
+				  </tr>
+				</table>
+			</div>
 		
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+			Displacement appears to have more depth/height texturing on both the cloth and sphere when compared to Bump shading.
+
+			
+
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						<tr>
+							<td style="text-align: center;">
+							  <img src="images/bumpsphere16.png" width="400px"/>
+							  <figcaption>Bump (-o 16 -a 16)</figcaption>
+							</td>
+							<td style="text-align: center;">
+							  <img src="images/displacementsphere16.png" width="400px"/>
+							  <figcaption>Displacement (-o 16 -a 16)</figcaption>
+							</td>
+						  </tr>
+						  <tr>
+							<td style="text-align: center;">
+							  <img src="images/bumpsphere128.png" width="400px"/>
+							  <figcaption>Bump (-o 128 -a 128)</figcaption>
+							</td>
+							<td style="text-align: center;">
+							  <img src="images/displacementsphere128.png" width="400px"/>
+							  <figcaption>Displacement (-o 128 -a 128)</figcaption>
+							</td>
+						  </tr>
+						</table>
+					</div>
+					I could be incorrect since it is very hard to tell the differences, but I believe that the (-o 128 -a 128) results in a more fine and flatter depth to the sphere and the (-o 16 -a 16) results in a more coarse and height-varied sphere.
+					<br><br>
+					<div style="display: flex; flex-direction: column; align-items: center;">
+						<table style="width: 100%; text-align: center; border-collapse: collapse;">
+							<tr>
+								<td style="text-align: center;">
+								  <img src="images/mirrorcloth.png" width="400px"/>
+								  <figcaption>Mirror Shader</figcaption>
+								</td>
+								<td style="text-align: center;">
+								  <img src="images/mirrorsphere.png" width="400px"/>
+								  <figcaption>Mirror Shader</figcaption>
+								</td>
+							</tr>
+						</table>
+					</div>
+
 		</div>
 	</body>
 </html>
